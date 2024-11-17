@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Splendor Autonomous Agent - Project Overview
 
 Welcome to the Splendor Autonomous Agent project! This project focuses on building an intelligent agent capable of playing the **Splendor** board game autonomously. The goal is to develop a competitive AI that uses advanced techniques for strategic decision-making.
@@ -147,3 +148,7 @@ git clone <repository_url>
 cd <repository_directory>
 
 # This README serves as a comprehensive guide to understanding, setting up, and running the Splendor Autonomous Agent project. Contributions and suggestions for improvement are always welcome!
+=======
+# AI-path-search
+Splendor Autonomous Agent  An intelligent agent designed to autonomously play the board game Splendor using advanced AI techniques, including Q-Learning, Breadth-First Search (BFS), and the Minimax algorithm. This project showcases strategic decision-making and adaptability in a competitive game environment.
+>>>>>>> ad009635de0f3570debdb34a71f4f70539aef461
