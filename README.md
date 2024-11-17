@@ -70,57 +70,104 @@ The repository is structured as follows:
 
 ## 4. Techniques Used
 
-### Q-Learning
+### 1. Q-Learning with Neural Network-Based Function Approximation
 
-Q-Learning is a reinforcement learning algorithm that allows the agent to make optimal decisions based on learned state-action values.
+Q-Learning is a reinforcement learning algorithm where the agent learns the value of state-action pairs. In this project, **deep neural networks** replace the Q-table, enabling scalability to complex and high-dimensional state spaces.
 
 #### Application in Splendor
-- Models long-term strategies by learning the value of state-action pairs.
-- Adapts dynamically to changing game conditions.
+- Encodes game states (e.g., resources, cards, opponent progress) into a feature vector.
+- Updates Q-values using the **Bellman Equation**:
+  \[
+  Q(s, a) \gets Q(s, a) + \alpha \big[ r + \gamma \max_{a'} Q(s', a') - Q(s, a) \big]
+  \]
+  where \(s\) is the current state, \(a\) is the action, \(r\) is the reward, and \(\gamma\) is the discount factor.
+- Trains a **Deep Q-Network (DQN)** to approximate Q-values for continuous action spaces.
 
-#### Key Benefits
-- Enables self-learning and dynamic improvement.
-- Effective for long-term reward maximization.
+#### Advanced Enhancements
+1. **Experience Replay**: Stores transitions \((s, a, r, s')\) in a buffer to break correlation between consecutive samples, improving convergence.
+2. **Target Network**: A secondary network is periodically updated to stabilize Q-value estimates.
+3. **Reward Shaping**: Tailored rewards encourage actions aligned with Splendor-specific goals, such as purchasing high-value cards or reserving critical resources.
+
+#### Advantages
+- Can handle complex, multi-dimensional state spaces.
+- Learns dynamic strategies by observing the opponent’s actions over time.
 
 #### Limitations
-- Requires a large number of iterations to converge.
-- Struggles with high-dimensional state spaces.
+- Computationally intensive during training, requiring GPU acceleration for efficiency.
+- May overfit to specific scenarios if exploration-exploitation tradeoff is not well-tuned.
 
 ---
 
-### Breadth-First Search (BFS)
+### 2. Breadth-First Search (BFS) with A* Heuristic Integration
 
-BFS is a graph traversal algorithm that explores all possible nodes layer by layer, guaranteeing the shortest path in unweighted graphs.
+While standard BFS explores all possible states layer by layer, this project enhances it with **A*-like heuristics** to prioritize exploration of promising game states.
 
 #### Application in Splendor
-- Evaluates reachable states quickly to identify immediate gains.
-- Useful for planning short-term actions, like resource collection.
+- Finds optimal sequences of actions to maximize **short-term resource efficiency** (e.g., collecting gems or purchasing cards).
+- Integrates heuristic estimates, such as:
+  \[
+  h(n) = \text{resource deficit to purchase next card}
+  \]
+  where \(h(n)\) estimates the effort required to transition to a desired game state.
 
-#### Key Benefits
-- Ensures the shortest path in unweighted scenarios.
-- Efficient for shallow state trees.
+#### Advanced Enhancements
+1. **Multi-Objective Heuristics**: Incorporates multiple factors, such as card value, resource efficiency, and opponent interference likelihood.
+2. **Adaptive Pruning**: Dynamically excludes low-probability states based on Splendor-specific thresholds (e.g., impractical resource combinations).
+
+#### Advantages
+- Ensures fast identification of short-term optimal paths.
+- Guarantees completeness (finds a solution if it exists).
 
 #### Limitations
-- Inefficient for deep or expansive search spaces.
-- Limited by the complexity of Splendor’s game tree.
+- Computationally expensive for deeply nested states without effective pruning.
+- Limited to local optimization; lacks consideration for long-term strategies.
 
 ---
 
-### Minimax Algorithm
+### 3. Minimax Algorithm with Monte Carlo Rollouts and Alpha-Beta Pruning
 
-The Minimax algorithm is a decision-making framework designed for adversarial games, optimizing for the best possible outcome against an opponent.
+The Minimax algorithm is extended with **Monte Carlo rollouts** and **Alpha-Beta Pruning** to optimize adversarial decision-making.
 
 #### Application in Splendor
-- Predicts and counters opponent moves.
-- Utilizes heuristics to focus on relevant game states.
+- Simulates opponent behavior by evaluating the game tree:
+  \[
+  \text{Value}(s) = \max_a \min_b \big( \text{Utility}(s, a, b) \big)
+  \]
+  where \(a\) and \(b\) represent actions for the agent and opponent, respectively.
+- Evaluates game states using a **utility function**:
+  \[
+  U(s) = \text{points gained} + w_1 \cdot \text{resource balance} - w_2 \cdot \text{opponent advantage}
+  \]
 
-#### Key Benefits
-- Robust against adversarial strategies.
-- Ensures optimal defensive and offensive play.
+#### Advanced Enhancements
+1. **Monte Carlo Rollouts**: Simulates random plays beyond the depth limit to approximate future outcomes.
+2. **Alpha-Beta Pruning**: Reduces the number of explored branches by skipping irrelevant states:
+   \[
+   \text{if } \alpha \geq \beta \text{, prune the branch.}
+   \]
+3. **Opponent Modeling**: Dynamically adjusts the opponent's utility based on observed tendencies (e.g., aggressive vs. defensive playstyles).
+
+#### Advantages
+- Provides robust planning in adversarial scenarios.
+- Balances defensive and offensive strategies effectively.
 
 #### Limitations
-- Computationally intensive without optimizations.
-- Performance degrades with deep state trees unless pruned.
+- Highly dependent on the depth of the search and quality of utility functions.
+- Computationally expensive without heuristic-based pruning.
+
+---
+
+### 4. Hybrid Strategy: Combining Q-Learning, BFS, and Minimax
+
+To address the diverse challenges of Splendor, the agent employs a **hybrid strategy** that integrates these techniques:
+- **Q-Learning** drives long-term strategy by learning optimal policies from experience.
+- **BFS with Heuristics** ensures short-term efficiency for immediate gains.
+- **Minimax with Rollouts** enables robust responses to opponent moves in adversarial scenarios.
+
+#### Dynamic Role Assignment
+1. **Opening Moves**: BFS identifies optimal resource collection paths to establish an early advantage.
+2. **Mid-Game Strategy**: Q-Learning refines strategies based on evolving game conditions.
+3. **Late-Game Defense**: Minimax counters opponent strategies, ensuring optimal endgame performance.
 
 ---
 
