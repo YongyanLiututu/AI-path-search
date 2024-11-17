@@ -174,14 +174,14 @@ To address the diverse challenges of Splendor, the agent employs a **hybrid stra
 ## 5. Advantages and Limitations
 
 ### Combined Advantages
-1. **Comprehensive Strategy**: Integrating Q-Learning, BFS, and Minimax ensures a balance between long-term planning and immediate action.
-2. **Adaptability**: Q-Learning enables dynamic learning, while BFS and Minimax provide robust planning.
-3. **Scalability**: Modular design allows for future enhancements.
+1. **Strategic Depth**: Combines short-term planning, long-term learning, and adversarial reasoning.
+2. **Dynamic Adaptation**: Adjusts strategies dynamically based on game progress and opponent actions.
+3. **Scalable Framework**: Modular design supports easy integration of additional techniques or improvements.
 
 ### Combined Limitations
-1. **State-Space Complexity**: Large state spaces can hinder BFS and Q-Learning performance.
-2. **Computational Overhead**: Minimax’s efficiency is constrained without advanced optimizations like Alpha-Beta Pruning.
-3. **Parameter Sensitivity**: Q-Learning requires careful tuning for optimal performance.
+1. **State-Space Complexity**: Handling large state spaces remains challenging despite heuristic and neural network optimizations.
+2. **Computation Overhead**: Hybrid strategies require careful balancing of computational resources and response time.
+3. **Parameter Sensitivity**: Effective performance depends on hyperparameter tuning (e.g., learning rates, exploration probabilities, heuristic weights).
 
 ---
 
